@@ -1,0 +1,138 @@
+#+TITLE: Faster ThreeSum (challenge)
+#+AUTHOR: Marcus Birkenkrahe
+#+SUBTITLE: COSC 2230 (CS III) Fall 26 | Augustana U.
+#+STARTUP: overview hideblocks indent entitiespretty
+#+OPTIONS: toc:nil num:nil ^:nil
+
+Make =ThreeSum= quadratic by trading memory for time. About 90 to 120
+minutes.
+The idea: if all values lie in [-M, M), keep a table with one slot per
+possible value; the value itself is the index, so a lookup costs one
+array access.
+
+Work in a folder with your =ThreeSum.java=, =Stopwatch.java=,
+=stdlib.jar= and these classes:
+
+#+begin_src java :eval never :tangle ../src/Distinct.java
+  // Distinct.java: n distinct random ints in [-M, M)
+  public class Distinct
+  {
+      public static final int M = 1000000;
+      public static int[] randomArray(int n)
+      {
+          boolean[] used = new boolean[2 * M];   // used[x + M]: x is taken
+          int[] a = new int[n];
+          for (int i = 0; i < n; i++)
+          {
+              int x;
+              do x = StdRandom.uniformInt(-M, M); while (used[x + M]);
+              used[x + M] = true;
+              a[i] = x;
+          }
+          return a;
+      }
+  }
+#+end_src
+
+#+begin_src java :eval never :tangle ../src/TwoSum.java
+  // TwoSum.java: brute force, counts pairs that sum to zero
+  public class TwoSum
+  {
+      public static int countPairs(int[] a)
+      {
+          int n = a.length, count = 0;
+          for (int i = 0; i < n; i++)
+              for (int j = i + 1; j < n; j++)
+                  if (a[i] + a[j] == 0) count++;
+          return count;
+      }
+  }
+#+end_src
+
+#+begin_src java :eval never
+  // ThreeSumTable.java: skeleton - fill in TODO 1 and TODO 2
+  public class ThreeSumTable
+  {
+      public static int countTriples(int[] a)   // distinct ints in [-M, M)
+      {
+          int M = Distinct.M;
+          int n = a.length;
+          int[] index = new int[2 * M];         // slot x + M belongs to value x
+          // TODO 1: fill the table (one loop over a[])
+          int count = 0;
+          for (int i = 0; i < n; i++)
+              for (int j = i + 1; j < n; j++)
+              {
+                  int v = -(a[i] + a[j]);       // value that completes the triple
+                  // TODO 2: replace false so each triple is counted once
+                  if (v >= -M && v < M && false) count++;
+              }
+          return count;
+      }
+      public static void main(String[] args)
+      {
+          for (int n : new int[] {800, 1500})
+          {
+              int[] a = Distinct.randomArray(n);
+              StdOut.printf("n = %d: brute force %d, table %d%n",
+                            n, ThreeSum.countTriples(a), countTriples(a));
+          }
+      }
+  }
+#+end_src
+
+#+begin_src java :eval never :tangle ../src/FasterDoublingTest.java
+  // FasterDoublingTest.java: doubling test for ThreeSumTable
+  public class FasterDoublingTest
+  {
+      public static double timeTrial(int n)
+      {
+          int[] a = Distinct.randomArray(n);
+          Stopwatch timer = new Stopwatch();
+          ThreeSumTable.countTriples(a);
+          return timer.elapsedTime();
+      }
+      public static void main(String[] args)
+      {
+          int max = Integer.parseInt(args[0]);
+          double previous = timeTrial(1000);
+          for (int n = 2000; n <= max; n *= 2)
+          {
+              double current = timeTrial(n);
+              StdOut.printf("%7d %7.3f %5.2f%n", n, current, current / previous);
+              previous = current;
+          }
+      }
+  }
+#+end_src
+
+* Exercises
+
+1. Write =TwoSumTable.java= with a linear-time =countPairs(int[] a)=,
+   using a table indexed by value. Its =main= prints both counts for
+   =Distinct.randomArray(100000)=; they must agree.
+
+2. Complete =ThreeSumTable.java=. Its =main= must print equal counts.
+
+3. Predict the doubling ratio, then run =FasterDoublingTest 64000=.
+   Time the brute-force =ThreeSum= at n = 2000 and 4000 with =time= and
+   =RandomInts= (Performance Part 2), and predict its time at
+   n = 32,000. What is the speed-up?
+
+4. How many bytes does the table use? Does that depend on n? What if
+   the values could be any =int=?
+
+5. What happens without the range check on =v=? Give two array values
+   that trigger it and name the exception.
+
+** Hints                                                             :skip:
+
+- 1: the partner of x is -x. Count each pair once.
+- 2: a yes/no table finds each triple three times. Store one more
+  thing about each value than whether it exists.
+
+* Submit
+
+=TwoSumTable.java=, =ThreeSumTable.java= and =faster_threesum.txt= (answers
+and pasted outputs). First lines of =faster_threesum.txt=: title, your
+name, and a specific AI-use statement (or "No AI tools used.").

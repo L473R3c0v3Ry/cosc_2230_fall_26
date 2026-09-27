@@ -1,0 +1,72 @@
+#+TITLE: Count the Operations
+#+AUTHOR: Marcus Birkenkrahe
+#+SUBTITLE: COSC 2230 (CS III) Fall 26 | Augustana U.
+#+STARTUP: overview hideblocks indent entitiespretty
+#+OPTIONS: toc:nil num:nil ^:nil
+
+Predict from the loops, then count. About 30 minutes. Your personal
+n is 50 + the last two digits of your Augie ID (ID ending in 37: n = 87).
+
+#+begin_src java :eval never :tangle ../src/CountOps.java
+  // CountOps.java: how often does the innermost statement run?
+  public class CountOps
+  {
+      static long f1(int n) { long c = 0; c++; return c; }
+      static long f2(int n) { long c = 0; for (int i = 0; i < n; i++) c++; return c; }
+      static long f3(int n) { long c = 0; for (int i = 0; i < n; i++)
+                                  for (int j = 0; j < n; j++) c++; return c; }
+      static long f4(int n) { long c = 0; for (int i = 0; i < n; i++)
+                                  for (int j = 0; j < n; j++)
+                                      for (int k = 0; k < n; k++) c++; return c; }
+      static long f5(int n) { long c = 0; for (int i = 0; i < n; i++)
+                                  for (int j = 0; j < i; j++) c++; return c; }
+      static long f6(int n) { long c = 0; for (int i = 1; i < n; i *= 2)
+                                  for (int j = 0; j < i; j++) c++; return c; }
+      static long f7(int n) { long c = 0; for (int i = n; i > 0; i /= 2) c++; return c; }
+      static long f8(int n) { long c = 0; for (int i = 0; i < n; i++)
+                                  for (int j = n; j > 0; j /= 2) c++; return c; }
+
+      public static void main(String[] args)
+      {
+          int n = Integer.parseInt(args[0]);
+          System.out.println("n = " + n);
+          System.out.printf("%-5s %14s %14s%n", "frag", "n", "2n");
+          System.out.printf("%-5d %14d %14d%n", 1, f1(n), f1(2 * n));
+          System.out.printf("%-5d %14d %14d%n", 2, f2(n), f2(2 * n));
+          System.out.printf("%-5d %14d %14d%n", 3, f3(n), f3(2 * n));
+          System.out.printf("%-5d %14d %14d%n", 4, f4(n), f4(2 * n));
+          System.out.printf("%-5d %14d %14d%n", 5, f5(n), f5(2 * n));
+          System.out.printf("%-5d %14d %14d%n", 6, f6(n), f6(2 * n));
+          System.out.printf("%-5d %14d %14d%n", 7, f7(n), f7(2 * n));
+          System.out.printf("%-5d %14d %14d%n", 8, f8(n), f8(2 * n));
+      }
+  }
+#+end_src
+
+* Exercises
+
+1. Without running anything, give the number of times =c++= runs in
+   fragments 1-5 as a formula in n, and evaluate it for your n.
+
+2. Run =java CountOps= with your n and paste the output. For fragments
+   1-5, give the doubling ratio (column 2n / column n) and the order
+   of growth. If a prediction was wrong, say why in one sentence.
+
+3. Fragment 5 (=f5=) counts about half as often as fragment 3 (=f3=). Why
+   is it still quadratic?
+
+4. Fragment 6 (=f6=) has a loop inside a doubling loop. Before looking
+   at its output, predict its order of growth and explain your
+   reasoning. Then check the output. Were you right? Why?
+
+5. Open the [[https://birkenkrahe.github.io/demos/orders-of-growth.html][Orders of Growth]] app, set /Axes/ to /Log-log/ and n to 32.
+   Run =java CountOps 32=. Which fragments match an app row exactly?
+
+6. /Bonus./ Fragment 7 (=f7=) counts one more than the app's lg n row at n
+   = 32. Why? Does it change the order of growth?
+
+* Submit
+
+=count_operations.txt= with your answers and pasted outputs. First lines:
+title, your name, and a specific AI-use statement (or "No AI tools
+used.").

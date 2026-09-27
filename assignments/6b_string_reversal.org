@@ -1,0 +1,73 @@
+#+TITLE: Reversing a String
+#+AUTHOR: Marcus Birkenkrahe
+#+SUBTITLE: COSC 2230 (CS III) Fall 26 | Augustana U.
+#+STARTUP: overview hideblocks indent entitiespretty
+#+OPTIONS: toc:nil num:nil ^:nil
+
+Based on Exercises 4.1.19 and 4.1.20 (p. 527). About 60 minutes. Work
+in a folder with your =Stopwatch.java=, =stdlib.jar= and these two
+classes:
+
+#+begin_src java :eval never :tangle ../src/SlowReverse.java
+  // SlowReverse.java: reverse1() from Exercise 4.1.19
+  public class SlowReverse
+  {
+      public static String reverse(String s)
+      {
+          String r = "";
+          for (int i = 0; i < s.length(); i++)
+              r = s.charAt(i) + r;
+          return r;
+      }
+  }
+#+end_src
+
+#+begin_src java :eval never :tangle ../src/RandomString.java
+  // RandomString.java: n random lowercase letters
+  public class RandomString
+  {
+      public static String make(int n)
+      {
+          char[] a = new char[n];
+          for (int i = 0; i < n; i++)
+              a[i] = (char) ('a' + StdRandom.uniformInt(26));
+          return new String(a);
+      }
+  }
+#+end_src
+
+* Exercises
+
+1. Strings are immutable, so =s.charAt(i) + r= copies all of =r= into a
+   new string. Show that =SlowReverse= writes n(n+1)/2 characters in
+   total. What is its order of growth?
+
+2. Write =FastReverse.java= with a linear-time =reverse(String s)=, using
+   a =char[]= and =new String(char[])=. The book prints an answer: write
+   yours first, then compare. Add a =main= that checks it against
+   =SlowReverse= with =equals()= for lengths 0, 1, 2, 10 and 1000.
+
+3. Write =ReverseTest.java=, a doubling test in the style of
+   =DoublingTest=: =java -cp .:stdlib.jar ReverseTest slow|fast start max=
+   prints n, the time and the ratio to the previous time. Build the
+   string before starting the =Stopwatch=.
+
+4. Predict the ratio, then run =ReverseTest slow 25000 400000= and
+   =ReverseTest fast 1000000 32000000=. Compare. From your slow time at
+   n = 400,000, predict the time at n = 1,000,000.
+
+5. Argue that no algorithm can reverse a string in less than linear
+   time.
+
+** Hints                                                             :skip:
+
+- 1: how long is =r= at the start of pass i?
+- 2: character i of =s= goes to position n - 1 - i.
+- 4: =Stopwatch= counts milliseconds; tiny times give noisy ratios.
+- 5: what if an algorithm never reads one particular character?
+
+* Submit
+
+=FastReverse.java=, =ReverseTest.java= and =reversal.txt= (answers and
+pasted outputs). First lines of =reversal.txt=: title, your name, and a
+specific AI-use statement (or "No AI tools used.").
