@@ -415,18 +415,6 @@ sys	0m0.102s
 - Almost 16 minutes for one run: cubic growth, felt directly.
 
 * Footnotes
-[fn:3] Full AI answer for question 2: "ThreeSum's triple-counting loop
-examines every combination of 3 distinct indices out of n, which is
-C(n,3) = n(n-1)(n-2)/6 combinations - for large n this is
-approximately n^3/6. When you double n to 2n, the count becomes
-approximately (2n)^3/6 = 8n^3/6.  Dividing the doubled count by the
-original count gives (8n^3/6)/(n^3/6) = 8. More precisely, the exact
-ratio is C(2n,3)/C(n,3) = [2n(2n-1)(2n-2)] / [n(n-1)(n-2)], which
-simplifies to 4(2n-1)/(n-2). As n grows large, the '-1' and '-2'
-become negligible compared to n, and this expression approaches 4*2
-= 8. At smaller n, those correction terms still matter a bit, which is
-why your ratio might be slightly off from exactly 8.00 even once the
-timing noise has died down."
 
 [fn:1] AI's answer for this model solution was simulated (by Claude
 Sonnet 5) to show a typical AI response that sounds exactly like a
@@ -457,3 +445,16 @@ swamp the signal and you get noisy ratios. At n=4000+, the actual
 O(n^3) computation takes long enough that these fixed overheads become
 negligible by comparison, and the ratio converges to something
 reproducible."
+
+[fn:3] Full AI answer for question 2: "ThreeSum's triple-counting loop
+examines every combination of 3 distinct indices out of n, which is
+C(n,3) = n(n-1)(n-2)/6 combinations - for large n this is
+approximately n^3/6. When you double n to 2n, the count becomes
+approximately (2n)^3/6 = 8n^3/6.  Dividing the doubled count by the
+original count gives (8n^3/6)/(n^3/6) = 8. More precisely, the exact
+ratio is C(2n,3)/C(n,3) = [2n(2n-1)(2n-2)] / [n(n-1)(n-2)], which
+simplifies to 4(2n-1)/(n-2). As n grows large, the '-1' and '-2'
+become negligible compared to n, and this expression approaches 4*2
+= 8. At smaller n, those correction terms still matter a bit, which is
+why your ratio might be slightly off from exactly 8.00 even once the
+timing noise has died down."
