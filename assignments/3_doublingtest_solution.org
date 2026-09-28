@@ -1,0 +1,459 @@
+#+TITLE: DoublingTest analysis (week 4)
+#+AUTHOR: Marcus Birkenkrahe
+#+SUBTITLE: COSC 2230 (CS III) Fall 26 | Augustana U.
+#+STARTUP: overview hideblocks indent entitiespretty
+#+OPTIONS: toc:nil num:nil ^:nil
+
+* Problem
+
+=DoublingTest= is a named program straight out of the textbook (Sedgewick
+& Wayne, Section 4.1) - there's no code for you to design here, it's
+given to you below in full. The job this week is to *run it and explain
+what you see*, not to write it.
+
+Work through this in order - guess, then run, then check with AI, then
+reconcile. Landing on the textbook-perfect answer isn't the point;
+noticing what your own numbers do, and then testing your explanation
+against a second source, is.
+
+For questions 1 and 2 below: write your own hypothesis first, before
+you consult anything else - a sentence or two is enough. If you
+genuinely have no idea, that's fine: instead of guessing, write down
+exactly what's confusing you about your own two output tables (not
+just "I don't know" - point to the specific rows or numbers that don't
+make sense to you). Either way, you need something written down before
+the next step.
+
+Then ask an AI tool the same question and paste your exact prompt and
+its full answer, verbatim, into your write-up - not a paraphrase or
+summary of what it said. Then write a short reconciliation - where did
+it match your hypothesis, where did it add something you'd missed, or
+where did you have to push back because it didn't fit your actual
+numbers? The reconciliation is what's graded, not the AI's answer on
+its own.
+
+* Provided code
+
+=DoublingTest.java= reuses two classes you already built in class,
+=ThreeSum= and =Stopwatch=, exactly as they are - no changes needed to
+either:
+
+#+begin_src java :eval never
+  public class DoublingTest
+  {
+      public static double timeTrial(int n)
+      {   // build a fresh random array of size n, time ThreeSum on it
+          int[] a = new int[n];
+          for (int i = 0; i < n; i++)
+              a[i] = StdRandom.uniformInt(-1000000, 1000000);
+          Stopwatch timer = new Stopwatch();
+          int count = ThreeSum.countTriples(a);
+          return timer.elapsedTime();
+      }
+      public static void main(String[] args)
+      {
+          int max = Integer.parseInt(args[0]);
+          for (int n = 250; n <= max; n *= 2)
+          {
+              double previous = timeTrial(n / 2);
+              double current  = timeTrial(n);
+              double ratio = current / previous;
+              StdOut.printf("%7d %4.2f\n", n, ratio);
+          }
+      }
+  }
+#+end_src
+
+* Requirements
+
+Estimated total time: 45-60 minutes.
+
+1) Compile =DoublingTest.java= in the same folder as your =ThreeSum.java=
+   and =Stopwatch.java= from class, and run it *twice* with =max = 8000=
+   (same command, run back to back - don't change anything between the
+   two runs). Paste the full, unedited terminal output of both runs
+   into your write-up - the actual numbers your machine produced, not
+   a cleaned-up table. (~5-10 min)
+
+2) For questions 1 and 2, submit four labeled parts each: your
+   hypothesis (or confusion statement), the exact prompt you gave an AI
+   tool, its answer verbatim, and your reconciliation. Question 3 is
+   pure arithmetic from class - just show your worked numbers, no AI
+   step needed there.
+   1. Compare your two runs at =n=250= and =n=500=. Why do these rows
+      change so much from run to run, while =n=4000= and =n=8000= stay
+      close to each other both times? (~15-20 min)
+   2. Why does the ratio settle in near 8 once =n= is large enough?
+      (~15-20 min)
+   3. Using the reasoning from class - C(2N,3)/C(N,3) =
+      4(2N-1)/(N-2) - predict the ratio you'd expect between =n=16000=
+      and =n=32000=.  Show the numbers you plugged in, don't just answer
+      "8". (~10-15 min)
+3) *Optional stretch:* actually run =DoublingTest 32000= to check your
+   prediction, if you have a few spare minutes - running time is cubic,
+   so each extra doubling costs roughly 8x the previous one (the run
+   itself takes about 15 minutes of wall-clock time - start it and work
+   on something else while it finishes).
+
+We'll go over hypotheses and AI reconciliations together in class on
+Monday.
+
+* Solution tips
+
+- New to this course: the hypothesis / prompt / AI's answer /
+  reconciliation format for questions 1 and 2. Here's what the four
+  parts look like in miniature, for an unrelated question (not one
+  from this assignment):
+
+  *Hypothesis:* My guess: computers can't store all decimal numbers
+  exactly in binary, so some rounding error creeps in during the
+  addition.
+
+  *Prompt:* "In Java, why does =System.out.println(0.1 + 0.2)= print
+  =0.30000000000000004= instead of =0.3=?"
+
+  *AI's answer (verbatim):* "Java's =double= type uses IEEE 754 binary
+  floating-point representation, and most decimal fractions - including
+  0.1 and 0.2 - cannot be represented exactly in binary, the same way
+  1/3 cannot be written exactly in decimal. Each is stored as the
+  closest representable binary value, which is already a tiny bit off
+  from the true decimal value. When you add the two approximations,
+  the errors combine, and the result, converted back to decimal for
+  printing, shows that residual error instead of rounding it away."
+
+  *Reconciliation:* Matches my hypothesis about binary storage causing
+  rounding error, but the AI's answer is more precise about *when* the
+  error appears - 0.1 alone is already inexact before any arithmetic
+  happens, not just introduced during the addition step, which is what
+  I'd assumed.
+
+- Nothing to debug in the code itself. If it won't compile, check that
+  =ThreeSum.java= and =Stopwatch.java= are sitting in the same directory
+  and were built with the same JDK (17) as =DoublingTest.java=.
+- Don't round your C(2N,3)/C(N,3) prediction to "8" without showing
+  the actual fraction for your =N= - the point of the question is the
+  arithmetic, not the limit.
+- If your two runs happen to agree closely even at =n=250=, that's
+  fine - it happens sometimes. Say so, and still give your own reason
+  why small =n= is noise-prone in principle, rather than claiming the
+  data disagrees with the theory when it doesn't.
+
+* Submission instructions
+
+- Submit *one file*: =DoublingTest_analysis.txt= (plain text or
+  Markdown), containing the full unedited terminal output of both
+  runs, and for questions 1-2 your hypothesis (or confusion
+  statement), exact prompt, the AI's verbatim answer, and your
+  reconciliation as four clearly labeled parts, and for question 3
+  your worked arithmetic.
+- No =.java= submission required this time - this is an analysis
+  exercise, not a coding one.
+
+* Sources
+
+- =ThreeSum= and the doubling-ratio experiment: Sedgewick & Wayne,
+  /Intro to Programming in Java/ 2e, Section 4.1 ("Performance").
+- =Stopwatch= itself comes from Program 3.2.2 (p. 391).
+- Used Claude Code (Sonnet 5) for the AI solution tips example.
+  
+* Solution
+
+#+name: DoublingTest.java
+#+begin_src java :dir ../src :tangle ../src/DoublingTest.java
+  public class DoublingTest
+  {
+      public static double timeTrial(int n)
+      {   // build a fresh random array of size n, time ThreeSum on it
+          int[] a = new int[n];
+          for (int i = 0; i < n; i++)
+              a[i] = StdRandom.uniformInt(-1000000, 1000000);
+          Stopwatch timer = new Stopwatch();
+          int count = ThreeSum.countTriples(a);
+          return timer.elapsedTime();
+      }
+      public static void main(String[] args)
+      {
+          int max = Integer.parseInt(args[0]);
+          for (int n = 250; n <= max; n *= 2)
+          {
+              double previous = timeTrial(n / 2);
+              double current  = timeTrial(n);
+              double ratio = current / previous;
+              StdOut.printf("%7d %4.2f\n", n, ratio);
+          }
+      }
+  }
+#+end_src
+
+Compile only =DoublingTest.java= - =javac= finds and compiles
+=ThreeSum.java= and =Stopwatch.java= automatically, the same way it did
+in class - and run it twice back to back:
+
+#+begin_src bash :dir ../src :results output :exports both :noeval
+  cd ../src
+  javac -cp .:stdlib.jar DoublingTest.java
+  echo "--- run 1 ---"
+  java  -cp .:stdlib.jar DoublingTest 8000
+  echo "--- run 2 ---"
+  java  -cp .:stdlib.jar DoublingTest 8000
+#+end_src
+
+#+RESULTS:
+#+begin_example
+--- run 1 ---
+    250 2.00
+    500 5.50
+   1000 7.73
+   2000 7.56
+   4000 7.84
+   8000 7.95
+--- run 2 ---
+    250 3.00
+    500 10.00
+   1000 6.14
+   2000 8.21
+   4000 7.62
+   8000 7.96
+#+end_example
+
+In another run, I got some surprise:
+#+begin_example
+--- run 1 ---
+    250 3.00
+    500 Infinity <-------------- ????
+   1000 7.82
+   2000 7.64
+   4000 7.70
+   8000 7.91
+--- run 2 ---
+    250 1.50
+    500 3.67
+   1000 7.08
+   2000 7.64
+   4000 7.78
+   8000 7.82
+#+end_example
+
+** Key fact: what does one row measure?
+
+Row =n= divides =time(n)= by =time(n/2)=, measured with our =Stopwatch=, which
+uses =System.currentTimeMillis()=: it counts whole *milliseconds* (Program
+3.2.2, p. 391). Raw times on a cold vs. warmed-up JVM:
+
+#+begin_example
+Raw times from one test machine (three rounds in one JVM):
+n =  250    0.015 s cold (first round), 0.000-0.004 s warm
+n = 1000    0.233 s cold (first round), 0.044-0.050 s warm
+#+end_example
+
+It relates to what happens when you run =java ThreeSum= (counting
+triples over its N^{3}/6 loops):
+
+1. ~javac~ doesn't produce machine code. It produces bytecode (~.class~),
+   instruction for a virtual machine.
+   
+2. When the program starts, the JVM interprets that bytecode. This
+   works right away but it is slow (decoding overhead).
+
+3. While interpreting, the JVM counts how often each method is called,
+   and how often each loop goes round. Code that runs a lot is *hot*.
+
+4. The JIT then translates the hot code into native machine code for
+   your processor, and optimizes it using what it has observed.
+
+5. Now the machine is warmed up, and calls run the fast compiled
+   version.
+
+So:
+- COLD = code is still being interpreted.
+- WARM = the JIT has compiled and optimized the code.
+- When code goes from COLD to WARM is machine-dependent.
+
+** Answer to question 1
+
+*Hypothesis:* At n = 250 and 500 the work takes only a few milliseconds,
+so anything else the machine does matters more than the algorithm. At
+n = 4000 and 8000 the work takes seconds, and the two runs agree
+within about 0.2.
+
+*Prompt:* "My Java DoublingTest computes time(n)/time(n/2) for
+ThreeSum. Two back-to-back runs give 2.00 vs. 3.00 at n = 250, but
+7.84 vs. 7.62 at n = 4000. Why?"
+
+*AI's answer (abridged)[fn:1]:* "Fixed overheads that do not grow with n: JIT
+warm-up (the first calls run interpreted), garbage collection, and
+timer/OS noise -- ~System.nanoTime()~ has real precision, but OS
+scheduling can dominate very small times. At small n they are a large
+fraction of the work; at large n they are negligible."[fn:2]
+
+*Reconciliation:* Right in principle. Two of its causes are visible in
+my own numbers, and one needs a correction:
+
+1. *JIT warm-up (confirmed).* The first trials run COLD: in the
+   test above, n = 1000 took 0.233 s cold and 0.044 s warm -- five
+   times slower for the same work. The small rows are measured first,
+   so their two times can come from different stages of compilation.
+
+2. *The timer (corrected).* The AI assumed =System.nanoTime()=; our
+   =Stopwatch= uses =currentTimeMillis()= and counts whole
+   milliseconds. At small n the times are 0, 1, 2, ... ms, so the
+   ratios are fractions of small integers: 2.00 = 2/1, 3.00 = 3/1,
+   5.50 = 11/2, 10.00 = 10/1, 3.67 = 11/3. One millisecond more or less
+   turns 2.00 into 3.00.
+
+3. *Why the large rows are stable.* On this machine one trial at n =
+   8000 takes about 11 s (estimated from the 16-minute stretch run
+   below). Being off by 1 ms is then about 0.01% of the time -- the
+   ratio cannot move. Both effects are fixed in size; the n^3 work is
+   not.
+
+Garbage collection is plausible but not visible in these numbers:
+=ThreeSum= allocates only one array per trial!
+
+** The =Infinity= at n = 500
+
+- The row divides =time(500)= by =time(250)=. ThreeSum on 250 numbers
+  checks C(250,3) \approx 2.6 million triples -- under 1 ms once the JIT
+  has compiled =countTriples()=. So =Stopwatch= returns =0.0=.
+
+- In Java, a positive =double= divided by =0.0= is =Infinity=: no
+  exception. (=0.0/0.0= would print =NaN=; only /integer/ division by
+  zero throws =ArithmeticException=.)
+
+- Same cause as question 1, taken to the extreme: the timer is too
+  coarse for the smallest rows. A 28.00 or 11.00 is the same effect
+  with a 1 ms instead of a 0 ms denominator.
+
+- Fixes: time many repetitions of the small trials, start the table
+  at a larger n, or measure with =System.nanoTime()=.
+
+- Verdict on the AI's performance (letter grade C):
+
+  1) It got the core idea right (fixed costs that don't grow with n
+     dominate when n is small and vanish at large n).
+
+  2) JIT warm-up iw the right mechanism.
+
+  3) It guessed the timer (instead of asking), and wrongly. That is
+     the dominant effect for small n. It cannot explain the =Infinity=
+     effect (accidental edge case).
+
+  4) "Garbage collection" is a filler term. It's not supported by the
+     numbers and does not apply for the program being measured.
+
+  5) The original answer starts with "Great question" - that's
+     flattery and adds nothing.
+
+  6) CPU frequency scaling (processor changes speeds while running to
+     save power and heat) cannot be checked with two runs.
+
+- However, much of the error comes from the human *prompt*! It does not
+  show the =Stopwatch= code, and the AI filled the gap. 
+
+** Answer to question 2
+
+*Hypothesis:* Three nested loops: doubling n multiplies the work by
+2 x 2 x 2 = 8.
+
+*Prompt:* "ThreeSum has three nested loops. When I double n, the time
+ratio settles near 8. Why 8 exactly?"
+
+*AI's answer (abridged):* "It checks C(n,3) = n(n-1)(n-2)/6 \sim n^3/6
+triples. The exact ratio C(2N,3)/C(N,3) = 4(2N-1)/(N-2) approaches 8
+as N grows."[fn:3]
+
+*Reconciliation:* Correct: the leading term n^3 decides the ratio, and
+the algebra checks out. But the last sentence gets the direction
+wrong: 4(2N-1)/(N-2) is slightly /above/ 8 (8.012 for N = 1000), and a
+correction of 0.01 is far too small to see - our two runs differ by
+about 0.2 at the same n. Our ratios scatter around 8 in both
+directions (7.56 ... 8.21): that wobbling (which you could also see in
+the visualization) is "measurement noise" (random error/bias), and it
+shrinks as the trials get longer (7.94, 7.93, 7.98 in the stretch
+run). By comparison, the systematic error (bias) does not wobble.
+
+|              | Random error (noise)        | Systematic error (bias)            |
+|--------------+-----------------------------+------------------------------------|
+| Direction    | scatters both ways          | pushes one way                     |
+| Example here | ratios 7.56...8.21 around 8 | cold JIT slowing only first trials |
+| Remedy       | repeat and average, measure | fix method (warm up first, better  |
+|              | longer                      | timer)                             |
+
+** Answer to question 3
+
+Row 32000 compares n = 32000 with N = 16000:
+
+4 x (2 x 16000 - 1) / (16000 - 2) = 4 x 31999 / 15998 = 127996 / 15998
+\approx 8.0008, i.e. 8.00 to two decimals.
+
+** Checking the prediction (stretch)
+
+#+begin_src bash :dir ../src :results output :exports both :noeval
+  cd ../src
+  time java -cp .:stdlib.jar DoublingTest 32000
+#+end_src
+
+#+RESULTS:
+#+begin_example
+    250 2.00
+    500 11.00
+   1000 7.82
+   2000 7.72
+   4000 7.75
+   8000 7.94
+  16000 7.93
+  32000 7.98
+
+real	15m50.933s
+user	15m50.977s
+sys	0m0.102s
+#+end_example
+
+- Predicted 8.00, measured 7.98 -- slightly below 8, like every large
+  row (question 2).
+- The small rows are still noise (2.00, 11.00): the timer (question 1).
+- Almost 16 minutes for one run: cubic growth, felt directly.
+
+* Footnotes
+[fn:3] Full AI answer for question 2: "ThreeSum's triple-counting loop
+examines every combination of 3 distinct indices out of n, which is
+C(n,3) = n(n-1)(n-2)/6 combinations - for large n this is
+approximately n^3/6. When you double n to 2n, the count becomes
+approximately (2n)^3/6 = 8n^3/6.  Dividing the doubled count by the
+original count gives (8n^3/6)/(n^3/6) = 8. More precisely, the exact
+ratio is C(2n,3)/C(n,3) = [2n(2n-1)(2n-2)] / [n(n-1)(n-2)], which
+simplifies to 4(2n-1)/(n-2). As n grows large, the '-1' and '-2'
+become negligible compared to n, and this expression approaches 4*2
+= 8. At smaller n, those correction terms still matter a bit, which is
+why your ratio might be slightly off from exactly 8.00 even once the
+timing noise has died down."
+
+[fn:1] AI's answer for this model solution was simulated (by Claude
+Sonnet 5) to show a typical AI response that sounds exactly like a
+real one. That's why you must reconcile.
+
+[fn:2] Full AI answer for question 1: "Great question - this is a very
+common pattern when microbenchmarking on the JVM. A few things happen
+at small input sizes that don't matter once the input gets large:
+
+1) JIT warm-up: the JVM starts by interpreting bytecode and only
+compiles hot methods to native code after they've run some number of
+times. Your very first timeTrial() calls are interpreted, which is
+much slower and more variable than the JIT-compiled version later
+calls get.
+
+2) Garbage collection: allocating the array and any temporary objects
+can trigger a GC pause at an unpredictable moment. At small n this
+pause can be a large fraction of the total measured time; at large n
+it's a rounding error.
+
+3) Timer/OS noise: System.nanoTime() has real precision, but at very
+small elapsed times, OS thread scheduling, other processes, and even
+CPU frequency scaling can dominate the signal.
+
+All three are essentially constant-size effects - they don't grow with
+n. At n=250 they're a large fraction of the (tiny) real work, so they
+swamp the signal and you get noisy ratios. At n=4000+, the actual
+O(n^3) computation takes long enough that these fixed overheads become
+negligible by comparison, and the ratio converges to something
+reproducible."
