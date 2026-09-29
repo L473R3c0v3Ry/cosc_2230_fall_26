@@ -414,6 +414,62 @@ sys	0m0.102s
 - The small rows are still noise (2.00, 11.00): the timer (question 1).
 - Almost 16 minutes for one run: cubic growth, felt directly.
 
+** Lessons for working with AI
+
+This exercise is as much about the AI step as about the timing data.
+A few habits carry over to every assignment that asks you to consult
+an AI tool:
+
+- *Write your hypothesis first.* Forming your own explanation before
+  you ask anything keeps you thinking instead of outsourcing the
+  thinking, and it gives you something concrete to check the answer
+  against.
+
+- *Quote the AI exactly, not from memory.* Paste its answer verbatim
+  rather than summarizing it -- a paraphrase smooths over exactly the
+  details you need to check.
+
+- *The reconciliation is the real assignment.* Where an answer matches
+  your data, adds something you hadn't considered, or falls apart
+  against your own numbers -- that comparison is the work being
+  graded, not the AI's answer by itself.
+
+- *"Right in principle" is not the same as "right."* The answer above
+  correctly named JIT warm-up as a cause but wrongly guessed which
+  timer the program used, and that wrong guess was the dominant effect
+  for small n. Check a plausible-sounding claim against your actual
+  output, not against whether it sounds reasonable.
+
+- *Watch for explanations that sound plausible but aren't supported by
+  your evidence.* Garbage collection was offered as a cause above, but
+  it doesn't apply here -- the program allocates only one array per
+  trial. An AI will readily suggest a textbook cause whether or not it
+  fits your specific numbers.
+
+- *Getting the formula right doesn't guarantee getting the direction
+  right.* An AI can derive the correct limiting value and still get
+  the sign of the remaining error backwards. Check which way a
+  correction should push a number, not just its size.
+
+- *A vague prompt gets a vague, overconfident answer.* An AI can only
+  reason from what you tell it -- leaving out relevant code or context
+  forces it to guess, and it guesses with full confidence. Most of
+  what an AI gets wrong traces back to what the prompt left out, not
+  to the AI being careless.
+
+- *Ignore flattery.* Phrases like "great question" are filler, not
+  content, and shouldn't be mistaken for a careful or hedged answer.
+
+- *Know what your data can and cannot confirm.* An AI may offer a
+  cause that sounds plausible but that your own results simply cannot
+  verify either way. Recognizing the limits of your evidence matters
+  as much as evaluating the AI's claim.
+
+- *Grade the answer, point by point.* Treat an AI's response the way
+  you would a classmate's draft: identify what it got right, what it
+  got wrong, and what it couldn't have known, rather than accepting or
+  rejecting it as a whole.
+
 * Footnotes
 
 [fn:1] AI's answer for this model solution was simulated (by Claude
