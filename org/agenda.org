@@ -1210,11 +1210,10 @@ triples summing to 0: 2
 4) Bring any questions to class
 5) Try stuff
 
-* W6S1: Sprint review / DoublingTest AI experiment / Midterm LEQs
+* DONE W6S1: Sprint review / Midterm LEQs
 
-- [ ] Review: Projects
-- [ ] Review: DoublingTest
-- [ ] Midterm LEQs (Learning Experience Questionnaire)
+- [X] Review: Projects
+- [X] Midterm LEQs (Learning Experience Questionnaire)
 
 ** Review: Projects - 30 min
 
@@ -1252,6 +1251,7 @@ triples summing to 0: 2
   multi-step agent with independent tools (it's too black-box).
 
 *** Interactive Pathfinding Algorithm Visualizer
+
 - *Very well scoped.* Clear goal, concrete deliverables, and stretch
   goals explicitly separated from the core. This is what "be specific"
   looks like.
@@ -1279,26 +1279,85 @@ triples summing to 0: 2
 - Check facts. Verify the university's email domains, and complete the
   references, including the AI tools.
 
-
-** Review: DoublingTest - 10 min
-
-- What did you find out?
-
-- My sample solution: [[https://tinyurl.com/doubling-test-solution][tinyurl.com/doubling-test-solution]]
-
 ** Midterm Learning Experience Questions - 10 min
 
 - You can find the questions in Canvas (LEQ)
 - Please answer honestly - open answers are valuable
 - The last three questions are mine - esp. important to me
 
-* W6S2: Binary search
-* W6S3: Bisection search
-* W7S1: Insertion sort
-* W7S2: Mergesort
-* W7S3: Midterm exam (50 min)
+* W6S2: DoublingTest AI experiment / Sequential search
+
+** Extras
+
+- New Canvas module with all project information
+- Includes "Lessons learnt" from the first sprint
+- You'll get your feedback no later than next week
+- If you need feedback urgently/sooner, email me
+
+** Review: DoublingTest - 5 min
+
+- What did you find out?
+
+- What did I find out?
+  #+begin_quote
+  1. Small =n= (250, 500) is noisy: our =Stopwatch= only counts whole
+     milliseconds, so a 0 ms trial gives ratios like 2.00, 3.00, or
+     even =Infinity= (division by zero: =time(500)/0.0=).
+
+  2. Large =n= (4000+) settles close to 8, matching C(2N,3)/C(N,3) -> 8.
+
+  3. The exact ratio approaches 8 from /above/ (8.0008 at N=16000), not
+     below - the AI got the formula right but the direction of the
+     small correction wrong.
+
+  4. =n=32000= took ~16 minutes: cubic growth, felt directly.
+
+  5. AI's biggest miss: it guessed we used =System.nanoTime()= instead
+     of asking - wrongly, since our =Stopwatch= uses
+     =currentTimeMillis()=, which explains most of the noise at small
+     =n=.[fn:3]
+  #+end_quote
+
+- My sample solution: [[https://tinyurl.com/doubling-test-solution][tinyurl.com/doubling-test-solution]]
+
+- Lessons for working with AI:
+  #+begin_quote
+  1. Write your hypothesis first.
+  2. "Right in principle" is not the same as "right."
+  3. Watch for explanations that sound plausible but aren't supported
+     by your evidence.
+  4. Getting the formula right doesn't guarantee getting the direction
+     right.
+  5. A vague prompt gets a vague, overconfident answer.
+  6. Ignore flattery.
+  7. Know what your data can and cannot confirm.
+  8. Grade the answer, point by point.
+  9. Personalization can quietly bias reconciliation.
+  10. Know what you're asking an AI to remember, and why.
+  #+end_quote
+  
+** A typical search client: Whitelist filter
+
+1. The problem: whitelist filter
+2. Code-along: client with sequential search
+3. Mathematical model
+4. Code-along: random input generator
+5. Doubling test for the whitefilter client
+6. Interactive companion site
+
+Download some test files:
+- [[https://tinyurl.com/2230-white4-text][tinyurl.com/2230-white4-text]]
+- [[https://tinyurl.com/2230-test-txt][tinyurl.com/2230-test-txt]]
+
+Interactive companion site:
+- [[https://birkenkrahe.github.io/demos/sequential-search.html][tinyurl.com/sequential-html]]
 
 * Footnotes
+[fn:3] ~currentTimeMillis()~ can only return integers. At n=250/500, the
+real elapsed time is of the order of a few ms. Small integers ratio
+badly: a small rounding error is a large fraction of the
+value. ~nanoTime~ has better real precision. Large n does not care: at
+n=4000/8000, real times are seconds, being off by 1 ms is 0.01%.
 
 [fn:1] The only difference between these strategies when traversing
 the grid: 1) BFS takes the oldest cell, 2) Dijkstra takes the cheapest
