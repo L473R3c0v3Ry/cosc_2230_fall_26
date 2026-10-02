@@ -1285,7 +1285,7 @@ triples summing to 0: 2
 - Please answer honestly - open answers are valuable
 - The last three questions are mine - esp. important to me
 
-* W6S2: DoublingTest AI experiment / Sequential search
+* DONE W6S2: DoublingTest AI experiment / Sequential search I
 
 ** Extras
 
@@ -1321,6 +1321,14 @@ triples summing to 0: 2
 - My sample solution: [[https://tinyurl.com/doubling-test-solution][tinyurl.com/doubling-test-solution]]
 
 - Lessons for working with AI:
+
+  1. Be as specific as you can.
+
+  2. Always review anything the AI returns.
+
+  3. Use AI as a tutor not as a solver.
+
+- My lessons for working with AI:
   #+begin_quote
   1. Write your hypothesis first.
   2. "Right in principle" is not the same as "right."
@@ -1338,12 +1346,12 @@ triples summing to 0: 2
   
 ** A typical search client: Whitelist filter
 
-1. The problem: whitelist filter
-2. Code-along: client with sequential search
-3. Mathematical model
-4. Code-along: random input generator
-5. Doubling test for the whitefilter client
-6. Interactive companion site
+1. [X] The problem: whitelist filter
+2. [X] Code-along: client with sequential search
+3. [ ] Mathematical model
+4. [ ] Code-along: random input generator
+5. [ ] Doubling test for the whitefilter client
+6. [ ] Interactive companion site
 
 Download some test files:
 - [[https://tinyurl.com/2230-white4-text][tinyurl.com/2230-white4-text]]
@@ -1352,7 +1360,33 @@ Download some test files:
 Interactive companion site:
 - [[https://birkenkrahe.github.io/demos/sequential-search.html][tinyurl.com/sequential-html]]
 
+Artifacts:
+- [[https://claude.ai/artifact/XXSrMo9PfWDCv2H9gsFoQf][Slide deck (Claude slides)]]
+- [[https://gist.github.com/birkenkrahe/6a61ee8be48d68cda4331070a8f2fb19][Code-along (gist)]]
+
+* W6S3: Sequential Search II / Binary Search I
+
+- [ ] All quizzes are open -> midterm exam
+- [ ] Sequential search II
+
+** Review questions - midterm teaser
+
+- Open Canvas and complete the quiz with 10 questions.
+- Time: 10 minutes followed by debriefing.
+
+** Sequential search II
+
+- [ ] Mathematical model
+- [ ] Code-along: random input generator
+- [ ] Doubling test for the whitefilter client
+- [ ] Interactive companion site
+
 * Footnotes
+
+[fn:4] "Interned" means the JVM keeps a single shared copy of a string
+in a special place so multiple string literals with the same
+characters all point to the same object in memory.
+
 [fn:3] ~currentTimeMillis()~ can only return integers. At n=250/500, the
 real elapsed time is of the order of a few ms. Small integers ratio
 badly: a small rounding error is a large fraction of the
