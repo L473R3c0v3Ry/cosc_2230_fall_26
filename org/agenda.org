@@ -1367,12 +1367,21 @@ Artifacts:
 * W6S3: Sequential Search II / Binary Search I
 
 - [ ] All quizzes are open -> midterm exam
+- [ ] Review quiz - midterm exam teaser
 - [ ] Sequential search II
 
-** Review questions - midterm teaser
+** Quizzes reopened -> midterm exams
 
-- Open Canvas and complete the quiz with 10 questions.
-- Time: 10 minutes followed by debriefing.
+- I have reopened all the quizzes
+- The midterm exam will consist of 30-35 questions
+- There will be a few more question types
+- There will be [pseudo]code questions
+
+** Review quiz - midterm teaser
+
+- Open Canvas and complete the quiz with 10 questions
+- Time: 15 minutes followed by quick debriefing
+- The exam workload will be about 3 x this much
 
 ** Sequential search II
 
@@ -1380,6 +1389,13 @@ Artifacts:
 - [ ] Code-along: random input generator
 - [ ] Doubling test for the whitefilter client
 - [ ] Interactive companion site
+
+** Assignments
+
+- Build an ExceptionFilter from WhiteFilter (prints only the keys not
+  on the whitelist)
+
+- Bonus: Compare =WhiteFilter.java= and =TestSS.java= systematically.
 
 * Footnotes
 
