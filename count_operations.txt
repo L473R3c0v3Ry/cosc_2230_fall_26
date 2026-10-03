@@ -1,6 +1,6 @@
 Count the Operations
 Name: Tsogt
-AI-use statement: I used OpenAI Codex to read the assignment, calculate the formulas and growth rates, run the instructor's unchanged Java program for n = 74 and n = 32, check the Orders of Growth app, and draft these answers. The predictions and explanations below were supplied by AI; they are not a record of predictions I personally made before running the program.
+AI-use statement: OpenAI Codex drafted the answers, calculated the formulas, ran the Java code, and checked the growth app.
 
 Personal n = 50 + 24 = 74. Twice n = 148.
 
