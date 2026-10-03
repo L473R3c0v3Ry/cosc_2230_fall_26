@@ -1,6 +1,6 @@
 Count the Operations
 Name: Tsogt
-AI-use statement: OpenAI Codex drafted the answers, calculated the formulas, ran the Java code, and checked the growth app.
+AI-use statement: OpenAI Codex calculated the formulas, ran the Java code, and checked the growth app.
 
 Personal n = 50 + 24 = 74. Twice n = 148.
 
