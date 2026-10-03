@@ -1,0 +1,94 @@
+Count the Operations
+Name: Tsogt
+AI-use statement: I used OpenAI Codex to read the assignment, calculate the formulas and growth rates, run the instructor's unchanged Java program for n = 74 and n = 32, check the Orders of Growth app, and draft these answers. The predictions and explanations below were supplied by AI; they are not a record of predictions I personally made before running the program.
+
+Personal n = 50 + 24 = 74. Twice n = 148.
+
+1. Formulas for fragments 1-5
+
+Fragment 1: 1. There are no loops; c++ runs once. At n = 74: 1.
+Fragment 2: n. The loop runs from i = 0 through n - 1. At n = 74: 74.
+Fragment 3: n^2. There are n outer iterations and n inner iterations each. At n = 74: 5,476.
+Fragment 4: n^3. Each of the three loops has n iterations. At n = 74: 405,224.
+Fragment 5: n(n - 1)/2. The inner counts are 0 + 1 + ... + (n - 1). At n = 74: 74(73)/2 = 2,701.
+
+2. Actual Java output, doubling ratios, and growth
+
+The supplied CountOps.java was compiled and run with:
+javac CountOps.java
+java CountOps 74
+
+n = 74
+frag               n             2n
+1                  1              1
+2                 74            148
+3               5476          21904
+4             405224        3241792
+5               2701          10878
+6                127            255
+7                  7              8
+8                518           1184
+
+Fragment    Doubling ratio (2n count / n count)    Order of growth
+1           1 / 1 = 1                             Theta(1), constant
+2           148 / 74 = 2                          Theta(n), linear
+3           21904 / 5476 = 4                      Theta(n^2), quadratic
+4           3241792 / 405224 = 8                  Theta(n^3), cubic
+5           10878 / 2701 = 298/73, about 4.08219   Theta(n^2), quadratic
+
+The formulas in question 1 agree with all five measured counts.
+For fragment 5, the ratio is 2(2n - 1)/(n - 1), which approaches 4 as n grows; it does not have to equal 4 exactly.
+
+3. Why fragment 5 is still quadratic
+
+Its count is n(n - 1)/2 = (1/2)n^2 - (1/2)n. The leading term is proportional to n^2. Multiplying by a constant such as 1/2 does not change the order of growth, and the linear term becomes less significant as n increases. Therefore, fragment 5 is Theta(n^2), just like fragment 3.
+
+4. Fragment 6: prediction and comparison
+
+The analytical prediction is Theta(n), linear growth. The outer loop uses i = 1, 2, 4, 8, ... while i < n, and the inner loop runs i times. Thus the total is a geometric sum, not n times the number of outer iterations.
+
+For n > 1, let m = ceil(log2(n)). The exact count is:
+1 + 2 + 4 + ... + 2^(m - 1) = 2^m - 1.
+This count is at least n - 1 and less than 2n, so its growth is linear.
+
+At n = 74, the count is 1 + 2 + 4 + 8 + 16 + 32 + 64 = 127.
+At n = 148, it is 1 + 2 + 4 + 8 + 16 + 32 + 64 + 128 = 255.
+The ratio is 255/127, about 2.00787. These results support the linear prediction. Having nested loops does not automatically mean quadratic growth because their iteration counts matter.
+
+5. Comparison with the Orders of Growth app at n = 32
+
+The app was checked with Axes set to Log-log and n set to 32:
+https://birkenkrahe.github.io/demos/orders-of-growth.html
+
+Actual output from java CountOps 32:
+
+n = 32
+frag               n             2n
+1                  1              1
+2                 32             64
+3               1024           4096
+4              32768         262144
+5                496           2016
+6                 31             63
+7                  6              7
+8                192            448
+
+Fragments 1, 2, 3, and 4 match the app's formula rows exactly:
+- Fragment 1: constant row, 1.
+- Fragment 2: linear row, n = 32.
+- Fragment 3: quadratic row, n^2 = 1,024.
+- Fragment 4: cubic row, n^3 = 32,768.
+The app abbreviates its displayed quadratic and cubic values as 1.0K and 32.8K; the underlying formulas give the exact counts above.
+
+The remaining fragments do not match an app row exactly at n = 32:
+- Fragment 5 gives 496, rather than n^2 = 1,024.
+- Fragment 6 gives 31, rather than n = 32.
+- Fragment 7 gives 6, rather than log2(32) = 5.
+- Fragment 8 gives 192, rather than n log2(n) = 160.
+These fragments still have quadratic, linear, logarithmic, and linearithmic growth, respectively.
+
+6. Bonus: the extra iteration in fragment 7
+
+At n = 32, the positive values of i are 32, 16, 8, 4, 2, and 1. The loop increments c at all six values, including i = 1. Integer division then makes i = 0, ending the loop.
+
+For positive integer n, the exact count is floor(log2(n)) + 1. The app's logarithmic row uses log2(n), which is 5 at n = 32. The extra iteration does not change the order of growth: fragment 7 is Theta(log n).
